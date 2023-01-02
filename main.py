@@ -20,7 +20,7 @@ while character_job.lower() not in ["fighter", "rogue", "wizard"]:
 
 my_character = Character_DnD(character_name, character_species, character_job)
 
-my_character.stat_increase()
+my_character.change_attribute_points()
 # my_character.weapon_and_armor()
-print(my_character.armor_class)
+print(my_character.dexterity_mod)
 print(my_character)
