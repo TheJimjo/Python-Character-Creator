@@ -28,6 +28,8 @@ class Character_DnD:
         self.armor = armor
         self.armor_bonus = 0
         self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
+#         I don't think this calculation is working. Even after using .stat_increase and changing the dexterity value, if I pull self.armor_class, it runs as 
+#       if the dexterity is still 8 and the armor_bonus is 0.
         self.weapon = weapon
         self.weapon_value = weapon_value
 
