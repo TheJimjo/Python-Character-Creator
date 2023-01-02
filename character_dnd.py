@@ -30,6 +30,7 @@ class Character_DnD:
         self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
         self.weapon = weapon
         self.weapon_value = weapon_value
+        self.attribute_value = 26
 
     def __repr__(self):
         # This will report back the D&D character name, species, job, full stat block.
@@ -38,6 +39,9 @@ class Character_DnD:
                f"\n{self.intelligence} Intelligence \n{self.wisdom} Wisdom \n{self.charisma} Charisma. \nThey attack" \
                f" using a {self.weapon}  and has an armor class of {self.armor_class}"
 
+    def current_strength(self):
+        
+
     def is_dead(self):
         # This will report back that the character is dead.
         self.is_dead = True
@@ -45,115 +49,22 @@ class Character_DnD:
             print("{name} is at zero hit points and is dead.".format(
                 name=self.name.title))
 
-    def stat_increase(self):
-        character_attribute_points = 26
-        while character_attribute_points > 0:
-            print(
-                f"You currently have {character_attribute_points} points available to spend.")
-            print(f"Strength: {self.strength} \nDexterity: {self.dexterity} \nConstitution: {self.constitution} \n"
-                  f"Intelligence: {self.intelligence} \nWisdom: {self.wisdom} \nCharisma: {self.charisma}")
-            character_attribute_build = input("\nPlease select from Strength, Dexterity, Constitution, Wisdom, "
-                                              "Intelligence, or Charisma. \nIf you would like to see how many points"
-                                              " it will take to increase a stat, please type 'stats'. ")
-            if character_attribute_build == "stats":
-                character_attribute_build = input(
-                    "Each single point increase from 8 to 13 will cost one attribute point. \nIncreasing to 14 or 15"
-                    " will cost two attribute points each. \nNo stat may be higher than 15 before species bonuses. "
-                    "\nPlease select from strength, dexterity, constitution, intelligence, wisdom, or charisma. ")
-                continue
-            if character_attribute_build.lower() == "strength":
-                if self.strength > 14:
-                    character_attribute_build = input(
-                        "You cannot increase strength higher than 15. Please select another stat."
-                        " If you would like to see how many points to increase a stat, please "
-                        "type 'stats.' ")
-                else:
-                    self.strength += 1
-                    if 8 <= self.strength <= 13:
-                        character_attribute_points -= 1
-                    else:
-                        character_attribute_points -= 2
-                    print(
-                        f"Your strength is now {self.strength}. You have {character_attribute_points} remaining.")
-                continue
-            if character_attribute_build.lower() == "dexterity":
-                if self.dexterity > 14:
-                    character_attribute_build = input(
-                        "You cannot increase dexterity higher than 15. Please select another stat."
-                        " If you would like to see how many points to increase a stat, please "
-                        "type 'stats.' ")
-                else:
-                    self.dexterity += 1
-                    if 8 <= self.dexterity <= 13:
-                        character_attribute_points -= 1
-                    else:
-                        character_attribute_points -= 2
-                    print(
-                        f"Your dexterity is now {self.dexterity}. You have {character_attribute_points} remaining.")
-                continue
-            if character_attribute_build.lower() == "constitution":
-                if self.constitution > 14:
-                    character_attribute_build = input(
-                        "You cannot increase constitution higher than 15. Please select another stat."
-                        " If you would like to see how many points to increase a stat, please "
-                        "type 'stats.' ")
-                else:
-                    self.constitution += 1
-                    if 8 <= self.constitution <= 13:
-                        character_attribute_points -= 1
-                    else:
-                        character_attribute_points -= 2
-                    print(
-                        f"Your constitution is now {self.constitution}. You have {character_attribute_points} remaining.")
-                continue
-            if character_attribute_build.lower() == "intelligence":
-                if self.intelligence > 14:
-                    character_attribute_build = input(
-                        "You cannot increase intelligence higher than 15. Please select another stat."
-                        " If you would like to see how many points to increase a stat, please "
-                        "type 'stats.' ")
-                else:
-                    self.intelligence += 1
-                    if 8 <= self.intelligence <= 13:
-                        character_attribute_points -= 1
-                    else:
-                        character_attribute_points -= 2
-                    print(
-                        f"Your intelligence is now {self.intelligence}. You have {character_attribute_points} remaining.")
-                continue
-            if character_attribute_build.lower() == "wisdom":
-                if self.wisdom > 14:
-                    character_attribute_build = input(
-                        "You cannot increase wisdom higher than 15. Please select another stat."
-                        " If you would like to see how many points to increase a stat, please "
-                        "type 'stats.' ")
-                else:
-                    self.wisdom += 1
-                    if 8 <= self.wisdom <= 13:
-                        character_attribute_points -= 1
-                    else:
-                        character_attribute_points -= 2
-                    print(
-                        f"Your wisdom is now {self.wisdom}. You have {character_attribute_points} remaining.")
-                continue
-            if character_attribute_build.lower() == "charisma":
-                if self.charisma > 14:
-                    character_attribute_build = input(
-                        "You cannot increase charisma higher than 15. Please select another stat."
-                        " If you would like to see how many points to increase a stat, please "
-                        "type 'stats.' ")
-                else:
-                    self.charisma += 1
-                    if 8 <= self.charisma <= 13:
-                        character_attribute_points -= 1
-                    else:
-                        character_attribute_points -= 2
-                    print(
-                        f"Your charisma is now {self.charisma}. You have {character_attribute_points} remaining.")
-                continue
-        print(f"Your final stats are:\n\n"
-              f"Strength: {self.strength} \nDexterity: {self.dexterity} \nConstitution: {self.constitution} \n"
-              f"Intelligence: {self.intelligence} \nWisdom: {self.wisdom} \nCharisma: {self.charisma}")
+    def stat_display(self):
+        return f"Your stats are as follows:\nStrength: {self.strength}\nDexterity: {self.dexterity}\n" \
+               f"Constitution: {self.constitution}\nIntelligence: {self.intelligence}\nWisdom: {self.wisdom}\n" \
+               f"Charisma{self.charisma}"
+
+    def attribute_points(self, stat):
+        total_points = 26
+        if self.
+
+    def strength_increase(self):
+        if strength < 16:
+        self.strength += 1
+        self.strength_mod = int(math.floor((strength - 10) / 2))
+        else:
+        return
+
 
     def weapon_and_armor(self):
         if self.job.lower() == "fighter":
