@@ -59,10 +59,12 @@ class Character_DnD:
                   f"{self.intelligence}\nWisdom: {self.wisdom}\nCharisma: {self.charisma}\n")
             which_stat = input("Which stat would you like to increase? Please select from strength, dexterity, "
                                "constitution, intelligence, wisdom, and Charisma. ")
-            if which_stat.lower not in ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]:
+            if which_stat.lower() not in ["strength", "dexterity", "constitution", "intelligence", "wisdom",
+                                          "charisma"]:
                 print(f"\nWhoops, '{which_stat}' wasn't an option. Please select from Strength, Dexterity, "
                       f"Constitution, Intelligence,Wisdom, or Charisma.")
-            self.stat_increase(which_stat)
+            else:
+                self.stat_increase(which_stat)
 
     # Increase a specific stat and ensure stat_mod is correct.
     def stat_increase(self, stat):
@@ -72,6 +74,12 @@ class Character_DnD:
                 self.strength_mod = int(math.floor((self.strength - 10) / 2))
                 if self.strength in range(9, 14):
                     self.attribute_points -= 1
+                elif self.attribute_points <= 1:
+                    self.strength -= 1
+                    self.strength_mod = int(math.floor((self.strength - 10) / 2))
+                    print(
+                        f"\nYou only have 1 point remaining and changing {stat} from {self.strength} to "
+                        f"{self.strength + 1} requires 2 points. ")
                 else:
                     self.attribute_points -= 2
                 self.change_attribute_points()
@@ -81,6 +89,13 @@ class Character_DnD:
                 self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
                 if self.dexterity in range(9, 14):
                     self.attribute_points -= 1
+                elif self.attribute_points <= 1:
+                    self.dexterity -= 1
+                    self.dexterity_mod = int(math.floor((self.dexterity - 10) / 2))
+                    self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
+                    print(
+                        f"\nYou only have 1 point remaining and changing {stat} from {self.dexterity} to "
+                        f"{self.dexterity + 1} requires 2 points. ")
                 else:
                     self.attribute_points -= 2
             elif stat.lower() == "constitution" and self.constitution < 15:
@@ -89,6 +104,13 @@ class Character_DnD:
                 self.hit_points = ((self.hit_die / 2) + self.constitution_mod) * self.level
                 if self.constitution in range(9, 14):
                     self.attribute_points -= 1
+                elif self.attribute_points <= 1:
+                    self.constitution -= 1
+                    self.constitution_mod = int(math.floor((self.constitution - 10) / 2))
+                    self.hit_points = ((self.hit_die / 2) + self.constitution_mod) * self.level
+                    print(
+                        f"\nYou only have 1 point remaining and changing {stat} from {self.constitution} to "
+                        f"{self.constitution + 1} requires 2 points. ")
                 else:
                     self.attribute_points -= 2
             elif stat.lower() == "intelligence" and self.intelligence < 15:
@@ -96,6 +118,12 @@ class Character_DnD:
                 self.intelligence_mod = int(math.floor((self.intelligence - 10) / 2))
                 if self.intelligence in range(9, 14):
                     self.attribute_points -= 1
+                elif self.attribute_points <= 1:
+                    self.intelligence -= 1
+                    self.intelligence_mod = int(math.floor((self.intelligence - 10) / 2))
+                    print(
+                        f"\nYou only have 1 point remaining and changing {stat} from {self.intelligence} to "
+                        f"{self.intelligence + 1} requires 2 points. ")
                 else:
                     self.attribute_points -= 2
             elif stat.lower() == "wisdom" and self.wisdom < 15:
@@ -103,6 +131,12 @@ class Character_DnD:
                 self.wisdom_mod = int(math.floor((self.wisdom - 10) / 2))
                 if self.wisdom in range(9, 14):
                     self.attribute_points -= 1
+                elif self.attribute_points <= 1:
+                    self.wisdom -= 1
+                    self.wisdom_mod = int(math.floor((self.wisdom - 10) / 2))
+                    print(
+                        f"\nYou only have 1 point remaining and changing {stat} from {self.wisdom} to "
+                        f"{self.wisdom + 1} requires 2 points. ")
                 else:
                     self.attribute_points -= 2
             elif stat.lower() == "charisma" and self.charisma < 15:
@@ -110,9 +144,16 @@ class Character_DnD:
                 self.charisma_mod = int(math.floor((self.charisma - 10) / 2))
                 if self.charisma in range(9, 14):
                     self.attribute_points -= 1
+                elif self.attribute_points <= 1:
+                    self.charisma -= 1
+                    self.charisma_mod = int(math.floor((self.charisma - 10) / 2))
+                    print(
+                        f"\nYou only have 1 point remaining and changing {stat} from {self.charisma} to "
+                        f"{self.charisma + 1} requires 2 points. ")
                 else:
                     self.attribute_points -= 2
-            print(f"\n{stat} is already at 15 and cannot be increased further")
+            else:
+                print(f"\n{stat} is already at 15 and cannot be increased further")
             break
 
     # User selects from two weapon / magic options based on job.
