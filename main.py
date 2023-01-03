@@ -21,6 +21,7 @@ while character_job.lower() not in ["fighter", "rogue", "wizard"]:
 my_character = Character_DnD(character_name, character_species, character_job)
 
 my_character.change_attribute_points()
-# my_character.weapon_and_armor()
+my_character.weapon_choice()
+my_character.armor_choice()
 print(my_character.attribute_points)
 print(my_character)

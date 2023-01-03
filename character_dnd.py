@@ -30,14 +30,14 @@ class Character_DnD:
         self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
         self.weapon = weapon
         self.weapon_value = weapon_value
-        self.attribute_points = 26
+        self.attribute_points = 0
 
     # Report back character name, species, job, stats, and equipment.
     def __repr__(self):
         return f"\n{self.name} is a level {self.level} {self.species} {self.job} with these stats:" \
                f"\n{self.strength} Strength \n{self.dexterity} Dexterity \n{self.constitution} Constitution " \
-               f"\n{self.intelligence} Intelligence \n{self.wisdom} Wisdom \n{self.charisma} Charisma. \nThey attack" \
-               f" using a {self.weapon}  and has an armor class of {self.armor_class}"
+               f"\n{self.intelligence} Intelligence \n{self.wisdom} Wisdom \n{self.charisma} Charisma \nThey attack" \
+               f" using {self.weapon}  and have an armor class of {self.armor_class}"
 
     # Report back character is dead.
     def is_dead(self):
@@ -66,7 +66,7 @@ class Character_DnD:
             else:
                 self.stat_increase(which_stat)
 
-    # Increase a specific stat and ensure stat_mod is correct.
+    # Increase a specific stat and ensure any attributes reliant on that stat recalculate.
     def stat_increase(self, stat):
         while self.attribute_points > 0:
             if stat.lower() == "strength" and self.strength < 15:
@@ -157,15 +157,68 @@ class Character_DnD:
             break
 
     # User selects from two weapon / magic options based on job.
-    def weapon_and_armor(self):
+    def weapon_choice(self):
         if self.job.lower() == "fighter":
             weapon_choice = input(
-                "Would you like to use a Greatsword (1) for 1d12 damage or a Flail and Shield (2) for "
-                " 1d10 damage and +2 AC? Please input 1 or 2. ")
+                "\nWould you like to use a Greatsword (1) for 1d12 damage or a Flail and Shield (2) for "
+                " 1d10 damage and +2 Armor Class? Please input 1 or 2. ")
             if weapon_choice == 1:
-                self.weapon = "Greatsword"
+                self.weapon = "a Greatsword"
                 self.weapon_value = randint(1, 12)
             else:
-                self.weapon = "Flail and Shield"
+                self.weapon = "a Flail and Shield"
                 self.weapon_value = randint(1, 8)
                 self.armor_bonus += 2
+                self.armor_class = self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
+        elif self.job.lower() == "rogue":
+            weapon_choice = input(
+                "\nWould you like to use a Shortsword (1) for 1d6 damage or a Dagger (2) for "
+                " 1d4 damage? Please input 1 or 2. ")
+            if weapon_choice == 1:
+                self.weapon = "a Shortsword"
+                self.weapon_value = randint(1, 6)
+            else:
+                self.weapon = "a Dagger"
+                self.weapon_value = randint(1, 4)
+        elif self.job.lower() == "wizard":
+            weapon_choice = input(
+                "\nWould you like to use a Firebolt (1) for 1d10 damage or a Frostbite (2) for "
+                " 1d6 cold damage and cause a Con save for disadvantage on the next attack roll? Please input 1 or 2. ")
+            if weapon_choice == 1:
+                self.weapon = "Firebolt"
+                self.weapon_value = randint(1, 10)
+            else:
+                self.weapon = "Frostbite"
+                self.weapon_value = randint(1, 6)
+
+    # Lets the user select different armors, except the wizard. They just get Mage Armor.
+    def armor_choice(self):
+        if self.job.lower() == "fighter":
+            armor_choice = input("\nWould you like Scale Mail (1) for 14 armor class plus your dexterity modifier "
+                                 "(maximum +2) or Studded Leather (2) for 12 armor class plus your dexterity modifier?"
+                                 "Please input 1 or 2. ")
+            if armor_choice == 1:
+                self.armor = "Scale Mail"
+                self.armor_bonus += 4
+                self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
+                if self.dexterity_mod > 2:
+                    self.armor_class = 10 + 2 + self.armor_bonus
+            else:
+                self.armor = "Studded Leather"
+                self.armor_bonus += 2
+                self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
+        elif self.job.lower() == "rogue":
+            armor_choice = input("\nWould you like Leather Armor (1) for 11 armor class plus your dexterity modifier or"
+                                 " Studded Leather (2) for 12 armor class and no maximum dexterity modifier? Please "
+                                 "input 1 or 2. ")
+            if armor_choice == 1:
+                self.armor = "Leather Armor"
+                self.armor_bonus += 1
+                self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
+            else:
+                self.armor = "Studded Leather"
+                self.armor_bonus += 2
+                self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
+        if self.job.lower() == "wizard":
+            self.armor = "Mage Armor"
+            self.armor_class = 10 + self.dexterity_mod + self.armor_bonus + self.intelligence_mod
