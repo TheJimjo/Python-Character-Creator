@@ -67,7 +67,12 @@ class Character(Entity):
             print()
             print(f"Attribute Points: {points}")
             print(error)
-            choice = int(input("Choose an attribute to increase: "))
+            try:
+                choice = int(input("Choose an attribute to increase: "))
+            except ValueError:
+                error = f"Please pick a number between {min(numbers)} and {max(numbers)}"
+                continue
+
             print()
             if choice in numbers:
                 choice -= 1
@@ -100,7 +105,7 @@ class Character(Entity):
 
 
     def roll_weapon_damage(self):
-        return roll(*self.weapon.damage) + self.get_attack_attr_bonus()
+        return roll(self.weapon.damage[0], self.weapon.damage[1], self.get_attack_attr_bonus())
         
 
     def __str__(self):
@@ -142,11 +147,14 @@ class Character(Entity):
 
 
     def attack(self, enemy):
-        attack_roll = roll(1, 20) + self.get_attack_bonus()
+        attack_roll = roll(1, 20, self.get_attack_bonus())
         print(f"{self.name} swings their {self.weapon.name} at the {enemy.name}!")
-        if enemy.armor_class < attack_roll:
-            print(f"{self.name} smacks the {enemy.name} a good one! {attack_roll} vs {enemy.get_ac()} AC")
-            enemy.take_damage(self.roll_weapon_damage())
+        print(attack_roll)
+        if enemy.armor_class < attack_roll.result:
+            print(f"{self.name} smacks the {enemy.name} a good one! {attack_roll.result} vs {enemy.get_ac()} AC")
+            damage_roll = self.roll_weapon_damage()
+            print(damage_roll)
+            enemy.take_damage(damage_roll.result)
         else:
             print(f"{self.name} wiffs!")
 

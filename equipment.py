@@ -30,6 +30,7 @@ class Weapon:
     cost: int
     damage: (int, int)
     damage_type: str
+    weight: int
     finesse: bool
     heavy: bool
     light: bool
@@ -43,19 +44,37 @@ class Weapon:
 
 
 weapons = list()
-weapons.append(Weapon("Club",
-                      False,
-                      False,
-                      1,
-                      (1, 4),
-                      "bludgeoning",
-                      False,
-                      False,
-                      False,
-                      False,
-                      (0, 0),
-                      False,
-                      False,
-                      False,
-                      False,
-                      (0, 0)))
+weapons.append(Weapon("Club", # name
+                      False, # martial
+                      False, # ranged
+                      1, # cost
+                      (1, 4), # damage
+                      "bludgeoning", # damage type
+                      2, # weight
+                      False, # finesse
+                      False, # heavy
+                      False, # light
+                      False, # loading
+                      (0, 0), # range distance
+                      False, # reach
+                      False, # thrown
+                      False, # two handed
+                      False, # versatile
+                      (0, 0))) # versatile damage
+weapons.append(Weapon("Greatsword", # name
+                      True, # martial
+                      False, # ranged
+                      50, # cost
+                      (2, 6), # damage
+                      "slashing", # damage type
+                      6, # weight
+                      False, # finesse
+                      True, # heavy
+                      False, # light
+                      False, # loading
+                      (0, 0), # range distance
+                      False, # reach
+                      False, # thrown
+                      True, # two handed
+                      False, # versatile
+                      (0, 0))) # versatile damage

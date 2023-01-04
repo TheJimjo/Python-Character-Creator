@@ -28,11 +28,14 @@ class Monster(Entity):
 
 
     def attack(self, enemy):
-        attack_roll = roll(1, 20) + self.attack_bonus
+        attack_roll = roll(1, 20, self.attack_bonus)
         print(f"{self.name} swings their {self.attack_name} at the {enemy.name}!")
-        if enemy.get_ac() < attack_roll:
-            print(f"{self.name} smacks {enemy.name} a good one! {attack_roll} vs {enemy.get_ac()} AC")
-            enemy.take_damage(roll(self.damage_roll) + self.damage_bonus)
+        print(attack_roll)
+        if enemy.get_ac() < attack_roll.result:
+            print(f"{self.name} smacks {enemy.name} a good one! {attack_roll.result} vs {enemy.get_ac()} AC")
+            damage_roll = roll(self.damage_roll[0], self.damage_roll[1], self.damage_bonus)
+            print(damage_roll)
+            enemy.take_damage(damage_roll.result)
         else:
             print(f"{self.name} wiffs!")
 
