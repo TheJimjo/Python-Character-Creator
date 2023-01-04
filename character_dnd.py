@@ -30,7 +30,7 @@ class Character_DnD:
         self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
         self.weapon = weapon
         self.weapon_value = weapon_value
-        self.attribute_points = 0
+        self.attribute_points = 26
         self.attack_bonus = 0
         self.spell_save_dc = 0
         self.proficiency_modifier = 2
