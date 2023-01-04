@@ -31,6 +31,9 @@ class Character_DnD:
         self.weapon = weapon
         self.weapon_value = weapon_value
         self.attribute_points = 0
+        self.attack_bonus = 0
+        self.spell_save_dc = 0
+        self.proficiency_modifier = 2
 
     # Report back character name, species, job, stats, and equipment.
     def __repr__(self):
@@ -116,11 +119,13 @@ class Character_DnD:
             elif stat.lower() == "intelligence" and self.intelligence < 15:
                 self.intelligence += 1
                 self.intelligence_mod = int(math.floor((self.intelligence - 10) / 2))
+                self.spell_save_dc = 8 + self.intelligence_mod + self.proficiency_modifier
                 if self.intelligence in range(9, 14):
                     self.attribute_points -= 1
                 elif self.attribute_points <= 1:
                     self.intelligence -= 1
                     self.intelligence_mod = int(math.floor((self.intelligence - 10) / 2))
+                    self.spell_save_dc = 8 + self.intelligence_mod + self.proficiency_modifier
                     print(
                         f"\nYou only have 1 point remaining and changing {stat} from {self.intelligence} to "
                         f"{self.intelligence + 1} requires 2 points. ")
@@ -164,7 +169,8 @@ class Character_DnD:
                 " 1d10 damage and +2 Armor Class? Please input 1 or 2. ")
             if weapon_choice == 1:
                 self.weapon = "a Greatsword"
-                self.weapon_value = randint(1, 12)
+                self.weapon_value = (randint(1, 12) + self.strength_mod)
+                self.attack_bonus = self.strength_mod
             else:
                 self.weapon = "a Flail and Shield"
                 self.weapon_value = randint(1, 8)
@@ -222,3 +228,72 @@ class Character_DnD:
         if self.job.lower() == "wizard":
             self.armor = "Mage Armor"
             self.armor_class = 10 + self.dexterity_mod + self.armor_bonus + self.intelligence_mod
+
+    def player_attack(self, monster):
+        attack_roll = (randint(1, 20))
+        save_roll = (randint(1, 20))
+        print(f"\n{self.name} attempts to attack the {monster.name} with {self.weapon}.")
+        if self.weapon.lower() == "frostbite":
+            print(f"\n{monster.name} rolls a constitution saving throw of {monster.constitution_save + save_roll} "
+                  f"compared to a spell save DC of {self.spell_save_dc}.")
+            if (monster.constituion_save + save_roll) < self.spell_save_dc:
+                print(f"\n{monster.name} has failed their save and takes {self.weapon_value} points of damage and "
+                      f"has disadvantage on their next attack roll.")
+            else:
+                print(f"\n{monster.name} has succeeded their save and suffers no ill effects.")
+        else:
+            print(f"\n{self.name} rolls an attack roll of {self.attack_bonus + attack_roll} compared to an AC of "
+                  f"{monster.armor_class}. ")
+            if monster.armor_class < self.attack_bonus + attack_roll:
+                attack_damage = self.weapon_value
+                print(f"\n{self.name} has landed a hit for {attack_damage} points of damage.")
+                monster.lose_hit_points(attack_damage)
+            else:
+                print(f"\n{monster.name} has successfully evaded the attack.")
+
+    def lose_hit_points(self, amount):
+        self.hit_points -= amount
+        if self.hit_points <= 0:
+            self.hit_points = 0
+            print(f"\n{self.name} has died.")
+        else:
+            print(f"\n{self.name} takes {amount} damage and has {self.hit_points} hit points remaining.")
+
+
+# Class represents a monter in DnD.
+class Monster_DnD:
+    def __init__(self, name, hit_points, armor_class, weapon, weapon_value, challenge_rating, constitution_save,
+                 attack_bonus):
+        self.name = name
+        self.hit_points = hit_points
+        self.armor_class = armor_class
+        self.weapon = weapon
+        self.weapon_value = weapon_value
+        self.challenge_rating = challenge_rating
+        self.is_dead = False
+        self.constitution_save = constitution_save
+        self.attack_bonus = attack_bonus
+
+    def __repr__(self):
+        return (f"\n {self.name} is a challenge rating {self.challenge_rating} monster with {self.hit_points} hit "
+                f"points, {self.armor_class} armor class and that wields {self.weapon}. ")
+
+    def monster_attack(self, player):
+        attack_roll = (randint(1, 20))
+        print(f"\n{self.name.title()} attempts to attack {player.name.title()} with {self.weapon}.")
+        print(f"\n{self.name.title()} rolls an attack roll of {self.attack_bonus + attack_roll} compared to an AC of "
+              f"{player.armor_class}. ")
+        if player.armor_class < self.attack_bonus + attack_roll:
+            attack_damage = self.weapon_value
+            print(f"\n{self.name.title()} has landed a hit for {attack_damage} points of damage.")
+            player.lose_hit_points(attack_damage)
+        else:
+            print(f"\n{player.name} has successfully evaded the attack.")
+
+    def lose_hit_points(self, amount):
+        self.hit_points -= amount
+        if self.hit_points <= 0:
+            self.hit_points = 0
+            print(f"\n{self.name} has died.")
+        else:
+            print(f"\n{self.name} takes {amount} damage and has {self.hit_points} hit points remaining.")
