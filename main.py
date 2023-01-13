@@ -1,5 +1,5 @@
 from character_dnd import Character_DnD
-from character_dnd import Monster_DnD
+from Monster import Monster_DnD
 from random import randint
 
 # Getting input on character name.
