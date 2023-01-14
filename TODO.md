@@ -7,7 +7,8 @@
     Create Separate Python file for NPC Class (done).
 ## 4. Create Locations
     Create separate file for locations (done)
-    Determine how to represent locations (dictionary? class?)
+    Determine how to represent locations (Class, Done)
+    Create some locations (done)
 ## 5. Create Fight code
     Partially done
 ## 6. Create NPC interface code.
@@ -17,7 +18,10 @@
     Realm travel
     NPC Interaction
     Monster Fight
-
+## 9. Create quests 
+    Give each NPC a quest.
+    Use dictionary. (key = Quest Name, value = Quest description)
+    
 # SUB TASKS
 
 ## 1. Create Character Generator

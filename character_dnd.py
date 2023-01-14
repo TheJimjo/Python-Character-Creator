@@ -1,4 +1,5 @@
 import math
+from random import randint
 # Test
 
 # Class to represent a base D&D character.
@@ -33,6 +34,7 @@ class Character_DnD:
         self.attack_bonus = 0
         self.spell_save_dc = 0
         self.proficiency_modifier = 2
+        self.log = {}
 
     # Report back character name, species, job, stats, and equipment.
     def __repr__(self):

@@ -24,7 +24,7 @@ my_character = Character_DnD(character_name, character_species, character_job)
 Kobold = Monster_DnD("Kobold", 5, 12, "a dagger", randint(1, 4), "1/8", -1, 4)
 red_dragon = Monster_DnD("the Ancient Red Dragon", 546, 22, "a Bite", randint(2, 10) + 24, 24, 9, 17)
 
-my_character.change_attribute_points()
+# my_character.change_attribute_points()
 my_character.weapon_choice()
 my_character.armor_choice()
 my_character.player_attack(Kobold)
