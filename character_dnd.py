@@ -168,7 +168,8 @@ class Character_DnD:
             weapon_choice = input(
                 "\nWould you like to use a Greatsword (1) for 1d12 damage or a Flail and Shield (2) for "
                 " 1d10 damage and +2 Armor Class? Please input 1 or 2. ")
-            if weapon_choice == 1:
+            print(weapon_choice)
+            if weapon_choice == "1":
                 self.weapon = "a Greatsword"
                 self.weapon_value = (randint(1, 12) + self.strength_mod)
                 self.attack_bonus = self.strength_mod
@@ -181,7 +182,7 @@ class Character_DnD:
             weapon_choice = input(
                 "\nWould you like to use a Shortsword (1) for 1d6 damage or a Dagger (2) for "
                 " 1d4 damage? Please input 1 or 2. ")
-            if weapon_choice == 1:
+            if weapon_choice == "1":
                 self.weapon = "a Shortsword"
                 self.weapon_value = randint(1, 6)
             else:
@@ -191,7 +192,7 @@ class Character_DnD:
             weapon_choice = input(
                 "\nWould you like to use a Firebolt (1) for 1d10 damage or a Frostbite (2) for "
                 " 1d6 cold damage and cause a Con save for disadvantage on the next attack roll? Please input 1 or 2. ")
-            if weapon_choice == 1:
+            if weapon_choice == "1":
                 self.weapon = "Firebolt"
                 self.weapon_value = randint(1, 10)
             else:
@@ -204,7 +205,7 @@ class Character_DnD:
             armor_choice = input("\nWould you like Scale Mail (1) for 14 armor class plus your dexterity modifier "
                                  "(maximum +2) or Studded Leather (2) for 12 armor class plus your dexterity modifier?"
                                  "Please input 1 or 2. ")
-            if armor_choice == 1:
+            if armor_choice == "1":
                 self.armor = "Scale Mail"
                 self.armor_bonus += 4
                 self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
@@ -218,7 +219,7 @@ class Character_DnD:
             armor_choice = input("\nWould you like Leather Armor (1) for 11 armor class plus your dexterity modifier or"
                                  " Studded Leather (2) for 12 armor class and no maximum dexterity modifier? Please "
                                  "input 1 or 2. ")
-            if armor_choice == 1:
+            if armor_choice == "1":
                 self.armor = "Leather Armor"
                 self.armor_bonus += 1
                 self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
@@ -228,8 +229,13 @@ class Character_DnD:
                 self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
         if self.job.lower() == "wizard":
             self.armor = "Mage Armor"
-            self.armor_class = 10 + self.dexterity_mod + self.armor_bonus + self.intelligence_mod
+            self.armor_class = 13 + self.dexterity_mod
 
+    def player_loadout(self):
+        print(f"{self.name} is wearing {self.armor} with {self.armor_class} and wielding {self.weapon}.")
+
+
+    # Player attacks a monster.
     def player_attack(self, monster):
         attack_roll = (randint(1, 20))
         save_roll = (randint(1, 20))
