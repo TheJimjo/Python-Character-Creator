@@ -1,6 +1,8 @@
 # MAIN TASKs
 ## 1. Create Character Class
+    Improve attribute gain method (use dictionary?)
     Test Character Generator
+    Fix methods that grant equipment (fixed)
 ## 2. Create Monster Class
     Create separate Python file (done).
 ## 3. Create NPC Class
