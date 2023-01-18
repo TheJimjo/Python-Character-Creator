@@ -4,7 +4,7 @@ from random import randint
 
 # Class to represent a base D&D character.
 class Character_DnD:
-    def __init__(self, name, species="unknown", job="nobody", level=1, strength=8, dexterity=8, constitution=8,
+    def __init__(self, name = "nobody", species="unknown", job="nobody", level=1, strength=8, dexterity=8, constitution=8,
                  intelligence=8, wisdom=8, charisma=8, weapon="none", weapon_value=0, armor="none"):
         self.name = name
         self.species = species
@@ -51,9 +51,9 @@ class Character_DnD:
 
     # Display character's stats.
     def stat_display(self):
-        return f"Your stats are as follows:\nStrength: {self.strength}\nDexterity: {self.dexterity}\n" \
-               f"Constitution: {self.constitution}\nIntelligence: {self.intelligence}\nWisdom: {self.wisdom}\n" \
-               f"Charisma{self.charisma}"
+        print(f"Your stats are as follows:\nStrength: {self.strength}\nDexterity: {self.dexterity}\n" \
+              f"Constitution: {self.constitution}\nIntelligence: {self.intelligence}\nWisdom: {self.wisdom}\n" \
+              f"Charisma: {self.charisma}")
 
     # Change attribute points based on what stat was increased in stat_increase method.
     def change_attribute_points(self):
@@ -69,6 +69,43 @@ class Character_DnD:
                       f"Constitution, Intelligence,Wisdom, or Charisma.")
             else:
                 self.stat_increase(which_stat)
+
+    def species_change(self, species):
+        if species.lower() == "human":
+            self.strength += 1
+            self.dexterity += 1
+            self.constitution += 1
+            self.intelligence += 1
+            self.wisdom += 1
+            self.charisma += 1
+        elif species.lower() == "elf":
+            self.dexterity += 2
+        else:
+            self.constitution += 2
+
+
+
+    def starting_character_information(self):
+        character_name = input(
+            "Please type what you would like your character name to be? ")
+        self.name = character_name.title()
+        character_species = input(
+            "Please type what you would like your character species to be? Please choose from Human, "
+            "Elf, or Dwarf. Then hit enter. ")
+        while character_species.lower() not in ["human", "elf", "dwarf"]:
+            character_species = input(
+                "Whoops, looks like you didn't choose one of the previous species. Please choose from "
+                "Human, Elf, or Dwarf. Then hit enter. ")
+        character_job = input(
+            "Please type what you would like your character's job to be? Please choose from Fighter, Rogue, "
+            "or Wizard. Then hit enter. ")
+        while character_job.lower() not in ["fighter", "rogue", "wizard"]:
+            character_job = input(
+                "Whoops, looks like you didn't choose one of the previous jobs. PLease choose from Fighter, "
+                "Rogue, or Wizard. Then hit enter. ")
+        self.change_attribute_points()
+        self.job = character_job.title()
+        self.species_change(character_species)
 
     # Increase a specific stat and ensure any attributes reliant on that stat recalculate.
     def stat_increase(self, stat):
@@ -232,7 +269,8 @@ class Character_DnD:
             self.armor_class = 13 + self.dexterity_mod
 
     def player_loadout(self):
-        print(f"{self.name} is wearing {self.armor} with {self.armor_class} and wielding {self.weapon}.")
+        print(f"{self.name} is wearing {self.armor} with {self.armor_class} armor class and wielding "
+              f"{self.weapon}.")
 
 
     # Player attacks a monster.
