@@ -1,6 +1,8 @@
 # MAIN TASKs
 ## 1. Create Character Class
     Improve attribute gain method (use dictionary?)
+    All randint calculations need to be in methods, not in class variables, possibly needs its
+    own class.
     Test Character Generator
     Fix methods that grant equipment (fixed)
 ## 2. Create Monster Class
