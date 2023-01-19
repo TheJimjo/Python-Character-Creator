@@ -1,5 +1,6 @@
 import math
 from random import randint
+
 # Test
 
 # Class to represent a base D&D character.
@@ -30,11 +31,12 @@ class Character_DnD:
         self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
         self.weapon = weapon
         self.weapon_value = weapon_value
-        self.attribute_points = 26
+        self.attribute_points = 0
         self.attack_bonus = 0
-        self.spell_save_dc = 0
+        self.spell_save_dc = 8
         self.proficiency_modifier = 2
         self.log = {}
+        self.gold = 0
 
     # Report back character name, species, job, stats, and equipment.
     def __repr__(self):
@@ -279,13 +281,20 @@ class Character_DnD:
         save_roll = (randint(1, 20))
         print(f"\n{self.name} attempts to attack the {monster.name} with {self.weapon}.")
         if self.weapon.lower() == "frostbite":
-            print(f"\n{monster.name} rolls a constitution saving throw of {monster.constitution_save + save_roll} "
+            con_save = monster.constitution_save + save_roll
+            print(f"\n{monster.name} rolls a constitution saving throw of {con_save} "
                   f"compared to a spell save DC of {self.spell_save_dc}.")
-            if (monster.constituion_save + save_roll) < self.spell_save_dc:
+            if con_save < self.spell_save_dc:
                 print(f"\n{monster.name} has failed their save and takes {self.weapon_value} points of damage and "
                       f"has disadvantage on their next attack roll.")
+                monster.lose_hit_points(self.weapon_value)
+                if monster.is_dead:
+                    print(f"\nCongratulations! You have slain the {monster.name}! Thanks for playing! ")
+                else:
+                    monster.monster_attack(self)
             else:
                 print(f"\n{monster.name} has succeeded their save and suffers no ill effects.")
+                monster.monster_attack(self)
         else:
             print(f"\n{self.name} rolls an attack roll of {self.attack_bonus + attack_roll} compared to an AC of "
                   f"{monster.armor_class}. ")
@@ -298,8 +307,23 @@ class Character_DnD:
 
     def lose_hit_points(self, amount):
         self.hit_points -= amount
+        print(f"\n{self.name} has {self.hit_points} hit points remaining.")
         if self.hit_points <= 0:
             self.hit_points = 0
-            print(f"\n{self.name} has died.")
+            self.is_dead = True
+            print(f"\n{self.name} has died. Better luck next time.")
         else:
             print(f"\n{self.name} takes {amount} damage and has {self.hit_points} hit points remaining.")
+
+    def attack_or_run(self, monster):
+        choice = input("Do you wish to attack (1) or run (2)?")
+        if choice == "1":
+            self.player_attack(monster)
+        elif choice == "2":
+            pass # Need to add logic for running away and returning to town.
+        else:
+            print("You did not select attack (1) or run (2). ")
+            self.attack_or_run(monster)
+
+
+
