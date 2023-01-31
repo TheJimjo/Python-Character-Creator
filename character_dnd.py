@@ -1,5 +1,6 @@
 import math
 from random import randint
+from dice import RollResult
 
 # Test
 
@@ -72,6 +73,7 @@ class Character_DnD:
             else:
                 self.stat_increase(which_stat)
 
+    #Update stats based on species selection
     def species_change(self, species):
         if species.lower() == "human":
             self.strength += 1
@@ -85,8 +87,7 @@ class Character_DnD:
         else:
             self.constitution += 2
 
-
-
+    #Character creation input.
     def starting_character_information(self):
         character_name = input(
             "Please type what you would like your character name to be? ")
