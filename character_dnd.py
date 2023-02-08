@@ -32,7 +32,7 @@ class Character_DnD:
         self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
         self.weapon = weapon
         self.weapon_value = weapon_value
-        self.attribute_points = 0
+        self.attribute_points = 26
         self.attack_bonus = 0
         self.spell_save_dc = 8
         self.proficiency_modifier = 2
@@ -58,22 +58,7 @@ class Character_DnD:
               f"Constitution: {self.constitution}\nIntelligence: {self.intelligence}\nWisdom: {self.wisdom}\n" \
               f"Charisma: {self.charisma}")
 
-    # Change attribute points based on what stat was increased in stat_increase method.
-    def change_attribute_points(self):
-        while self.attribute_points > 0:
-            print(f"\nYou have {self.attribute_points} points remaining. and the following stats:\n\nStrength: "
-                  f"{self.strength}\nDexterity: {self.dexterity}\nConstitution: {self.constitution}\nIntelligence: "
-                  f"{self.intelligence}\nWisdom: {self.wisdom}\nCharisma: {self.charisma}\n")
-            which_stat = input("Which stat would you like to increase? Please select from strength, dexterity, "
-                               "constitution, intelligence, wisdom, and Charisma. ")
-            if which_stat.lower() not in ["strength", "dexterity", "constitution", "intelligence", "wisdom",
-                                          "charisma"]:
-                print(f"\nWhoops, '{which_stat}' wasn't an option. Please select from Strength, Dexterity, "
-                      f"Constitution, Intelligence,Wisdom, or Charisma.")
-            else:
-                self.stat_increase(which_stat)
-
-    #Update stats based on species selection
+    # Update stats based on species selection
     def species_change(self, species):
         if species.lower() == "human":
             self.strength += 1
@@ -87,7 +72,7 @@ class Character_DnD:
         else:
             self.constitution += 2
 
-    #Character creation input.
+    # Character creation input.
     def starting_character_information(self):
         character_name = input(
             "Please type what you would like your character name to be? ")
@@ -106,101 +91,67 @@ class Character_DnD:
             character_job = input(
                 "Whoops, looks like you didn't choose one of the previous jobs. PLease choose from Fighter, "
                 "Rogue, or Wizard. Then hit enter. ")
-        self.change_attribute_points()
+        print(f"\nYou have {self.attribute_points} points remaining. and the following stats:\n\nStrength: "
+              f"{self.strength}\nDexterity: {self.dexterity}\nConstitution: {self.constitution}\nIntelligence: "
+              f"{self.intelligence}\nWisdom: {self.wisdom}\nCharisma: {self.charisma}\n")
+        while self.attribute_points > 0:
+            self.change_attribute_points()
         self.job = character_job.title()
         self.species_change(character_species)
 
-    # Increase a specific stat and ensure any attributes reliant on that stat recalculate.
-    def stat_increase(self, stat):
-        while self.attribute_points > 0:
-            if stat.lower() == "strength" and self.strength < 15:
-                self.strength += 1
-                self.strength_mod = int(math.floor((self.strength - 10) / 2))
-                if self.strength in range(9, 14):
-                    self.attribute_points -= 1
-                elif self.attribute_points <= 1:
-                    self.strength -= 1
-                    self.strength_mod = int(math.floor((self.strength - 10) / 2))
-                    print(
-                        f"\nYou only have 1 point remaining and changing {stat} from {self.strength} to "
-                        f"{self.strength + 1} requires 2 points. ")
-                else:
-                    self.attribute_points -= 2
-                self.change_attribute_points()
-            elif stat.lower() == "dexterity" and self.dexterity < 15:
-                self.dexterity += 1
-                self.dexterity_mod = int(math.floor((self.dexterity - 10) / 2))
-                self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
-                if self.dexterity in range(9, 14):
-                    self.attribute_points -= 1
-                elif self.attribute_points <= 1:
-                    self.dexterity -= 1
-                    self.dexterity_mod = int(math.floor((self.dexterity - 10) / 2))
-                    self.armor_class = 10 + self.dexterity_mod + self.armor_bonus
-                    print(
-                        f"\nYou only have 1 point remaining and changing {stat} from {self.dexterity} to "
-                        f"{self.dexterity + 1} requires 2 points. ")
-                else:
-                    self.attribute_points -= 2
-            elif stat.lower() == "constitution" and self.constitution < 15:
-                self.constitution += 1
-                self.constitution_mod = int(math.floor((self.constitution - 10) / 2))
-                self.hit_points = ((self.hit_die / 2) + self.constitution_mod) * self.level
-                if self.constitution in range(9, 14):
-                    self.attribute_points -= 1
-                elif self.attribute_points <= 1:
-                    self.constitution -= 1
-                    self.constitution_mod = int(math.floor((self.constitution - 10) / 2))
-                    self.hit_points = ((self.hit_die / 2) + self.constitution_mod) * self.level
-                    print(
-                        f"\nYou only have 1 point remaining and changing {stat} from {self.constitution} to "
-                        f"{self.constitution + 1} requires 2 points. ")
-                else:
-                    self.attribute_points -= 2
-            elif stat.lower() == "intelligence" and self.intelligence < 15:
-                self.intelligence += 1
-                self.intelligence_mod = int(math.floor((self.intelligence - 10) / 2))
-                self.spell_save_dc = 8 + self.intelligence_mod + self.proficiency_modifier
-                if self.intelligence in range(9, 14):
-                    self.attribute_points -= 1
-                elif self.attribute_points <= 1:
-                    self.intelligence -= 1
-                    self.intelligence_mod = int(math.floor((self.intelligence - 10) / 2))
-                    self.spell_save_dc = 8 + self.intelligence_mod + self.proficiency_modifier
-                    print(
-                        f"\nYou only have 1 point remaining and changing {stat} from {self.intelligence} to "
-                        f"{self.intelligence + 1} requires 2 points. ")
-                else:
-                    self.attribute_points -= 2
-            elif stat.lower() == "wisdom" and self.wisdom < 15:
-                self.wisdom += 1
-                self.wisdom_mod = int(math.floor((self.wisdom - 10) / 2))
-                if self.wisdom in range(9, 14):
-                    self.attribute_points -= 1
-                elif self.attribute_points <= 1:
-                    self.wisdom -= 1
-                    self.wisdom_mod = int(math.floor((self.wisdom - 10) / 2))
-                    print(
-                        f"\nYou only have 1 point remaining and changing {stat} from {self.wisdom} to "
-                        f"{self.wisdom + 1} requires 2 points. ")
-                else:
-                    self.attribute_points -= 2
-            elif stat.lower() == "charisma" and self.charisma < 15:
-                self.charisma += 1
-                self.charisma_mod = int(math.floor((self.charisma - 10) / 2))
-                if self.charisma in range(9, 14):
-                    self.attribute_points -= 1
-                elif self.attribute_points <= 1:
-                    self.charisma -= 1
-                    self.charisma_mod = int(math.floor((self.charisma - 10) / 2))
-                    print(
-                        f"\nYou only have 1 point remaining and changing {stat} from {self.charisma} to "
-                        f"{self.charisma + 1} requires 2 points. ")
-                else:
-                    self.attribute_points -= 2
+    # Change attribute points based on what stat was increased in stat_increase method.
+    def change_attribute_points(self):
+            which_stat = input("Which stat would you like to increase? Please select from strength, dexterity, "
+                               "constitution, intelligence, wisdom, and Charisma. ")
+            if which_stat.lower() not in ["strength", "dexterity", "constitution", "intelligence", "wisdom",
+                                          "charisma"]:
+                print(f"\nWhoops, '{which_stat}' wasn't an option. Please select from Strength, Dexterity, "
+                      f"Constitution, Intelligence,Wisdom, or Charisma.")
             else:
-                print(f"\n{stat} is already at 15 and cannot be increased further")
-            break
+                self.stat_cost(which_stat)
+
+    # Increase a character's base stats.
+    def stat_increase(self, stat, amount):
+        stats_dictionary = {"strength": self.strength, "dexterity": self.dexterity, "constitution": self.constitution,
+                            "intelligence": self.intelligence, "wisdom": self.wisdom, "charisma": self.charisma}
+        if stat in stats_dictionary.keys():
+            stats_dictionary[stat] += amount
+            print(f"\nYour {stat} is now {stats_dictionary[stat]}")
+            print(f"\nYou have {self.attribute_points} points remaining. and the following stats:\n\nStrength: "
+                  f"{self.strength}\nDexterity: {self.dexterity}\nConstitution: {self.constitution}\nIntelligence: "
+                  f"{self.intelligence}\nWisdom: {self.wisdom}\nCharisma: {self.charisma}\n")
+        else:
+            print("Your code isn't working.")
+
+    # Determine cost of stat increase and ensure it can be increased as requested.
+    def stat_cost(self, stat):
+        stats_dictionary = {"strength": self.strength, "dexterity": self.dexterity, "constitution": self.constitution,
+                            "intelligence": self.intelligence, "wisdom": self.wisdom, "charisma": self.charisma}
+        print(f"Attribute Points: {self.attribute_points}")
+        print(f"\nHow many points would you like to increase {stat} by? ")
+        increase = input("Selection: ")
+        cost = 0
+        for number in range(stats_dictionary[stat], stats_dictionary[stat] + int(increase)):
+            if number <= 13:
+                cost += 1
+            elif number <= 15:
+                cost += 2
+            else:
+                print(f"\nThat would increase {stat} beyond 15. Please select another stat.")
+        if cost > self.attribute_points:
+            print(f"\nThis increase requires {cost} attribute points and you only have {self.attribute_points}. Please"
+                  f"select another stat.")
+        else:
+            print(f"\nIt will cost {cost} attribute points to increase {stat} from {stats_dictionary[stat]} to "
+                  f"{stats_dictionary[stat] + int(increase)}. Do you want to apply this change Y/N?")
+            choice = input("Selection: ")
+            if choice.lower() == "y":
+                self.attribute_points -= cost
+                self.stat_increase(stat, int(increase))
+            else:
+                print("No worries, let's try again.")
+
+
 
     # User selects from two weapon / magic options based on job.
     def weapon_choice(self):
@@ -326,5 +277,19 @@ class Character_DnD:
             print("You did not select attack (1) or run (2). ")
             self.attack_or_run(monster)
 
+# Accepts input from a user and returns the choice of a specific attribute, to be passed as an argument for other
+# methods.
+def stat_choice():
+    stats = {"1": "strength", "2": "dexterity", "3": "constitution", "4": "intelligence", "5": "wisdom",
+             "6": "charisma"}
+    print("\nWhich stat would you like to choose. Please select a number")
+    print()
+    for key, value in stats.items():
+        print(key, value)
+    print()
+    choice = input("Selection: ")
+    while choice not in stats.keys():
+        choice = input("\nPlease select a valid number.")
+    return choice
 
 
