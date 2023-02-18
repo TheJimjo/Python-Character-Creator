@@ -12,17 +12,12 @@ class Character_DnD:
         self.species = species
         self.job = job
         self.level = level
-        self.strength = strength
+        self.stats = {"strength": 8, "dexterity": 8, "constitution": 8, "intelligence": 8, "wisdom": 8, "charisma": 8}
         self.strength_mod = int(math.floor((strength - 10) / 2))
-        self.dexterity = dexterity
         self.dexterity_mod = int(math.floor((dexterity - 10) / 2))
-        self.constitution = constitution
         self.constitution_mod = int(math.floor((constitution - 10) / 2))
-        self.intelligence = intelligence
         self.intelligence_mod = int(math.floor((intelligence - 10) / 2))
-        self.wisdom = wisdom
         self.wisdom_mod = int(math.floor((wisdom - 10) / 2))
-        self.charisma = charisma
         self.charisma_mod = int(math.floor((charisma - 10) / 2))
         self.is_dead = False
         self.hit_die = 6
@@ -42,8 +37,9 @@ class Character_DnD:
     # Report back character name, species, job, stats, and equipment.
     def __repr__(self):
         return f"\n{self.name} is a level {self.level} {self.species} {self.job} with these stats:" \
-               f"\n{self.strength} Strength \n{self.dexterity} Dexterity \n{self.constitution} Constitution " \
-               f"\n{self.intelligence} Intelligence \n{self.wisdom} Wisdom \n{self.charisma} Charisma \nThey attack" \
+               f"\n{self.stats['strength']} Strength \n{self.stats['dexterity']} Dexterity " \
+               f"\n{self.stats['constitution']} Constitution \n{self.stats['intelligence']} Intelligence " \
+               f"\n{self.stats['wisdom']} Wisdom \n{self.stats['charisma']} Charisma \nThey attack" \
                f" using {self.weapon}  and have an armor class of {self.armor_class}"
 
     # Report back character is dead.
@@ -54,23 +50,23 @@ class Character_DnD:
 
     # Display character's stats.
     def stat_display(self):
-        print(f"Your stats are as follows:\nStrength: {self.strength}\nDexterity: {self.dexterity}\n" \
-              f"Constitution: {self.constitution}\nIntelligence: {self.intelligence}\nWisdom: {self.wisdom}\n" \
-              f"Charisma: {self.charisma}")
+        print(f"Your stats are as follows:\nStrength: {self.stats['strength']}\nDexterity: {self.stats['dexterity']}"
+              f"\nConstitution: {self.stats['constitution']}\nIntelligence: {self.stats['intelligence']}"
+              f"\nWisdom: {self.stats['wisdom']} \nCharisma: {self.stats['charisma']}")
 
     # Update stats based on species selection
     def species_change(self, species):
         if species.lower() == "human":
-            self.strength += 1
-            self.dexterity += 1
-            self.constitution += 1
-            self.intelligence += 1
-            self.wisdom += 1
-            self.charisma += 1
+            self.stats["strength"] += 1
+            self.stats["dexterity"] += 1
+            self.stats["constitution"] += 1
+            self.stats["intelligence"] += 1
+            self.stats["wisdom"] += 1
+            self.stats["charisma"] += 1
         elif species.lower() == "elf":
-            self.dexterity += 2
+            self.stats["dexterity"] += 2
         else:
-            self.constitution += 2
+            self.stats["dexterity"] += 2
 
     # Character creation input.
     def starting_character_information(self):
@@ -92,8 +88,9 @@ class Character_DnD:
                 "Whoops, looks like you didn't choose one of the previous jobs. PLease choose from Fighter, "
                 "Rogue, or Wizard. Then hit enter. ")
         print(f"\nYou have {self.attribute_points} points remaining. and the following stats:\n\nStrength: "
-              f"{self.strength}\nDexterity: {self.dexterity}\nConstitution: {self.constitution}\nIntelligence: "
-              f"{self.intelligence}\nWisdom: {self.wisdom}\nCharisma: {self.charisma}\n")
+              f"{self.stats['strength']}\nDexterity: {self.stats['dexterity']}\nConstitution: "
+              f"{self.stats['constitution']}\nIntelligence: {self.stats['intelligence']}\nWisdom: "
+              f"{self.stats['wisdom']}\nCharisma: {self.stats['charisma']}\n")
         while self.attribute_points > 0:
             self.change_attribute_points()
         self.job = character_job.title()
@@ -101,37 +98,35 @@ class Character_DnD:
 
     # Change attribute points based on what stat was increased in stat_increase method.
     def change_attribute_points(self):
-            which_stat = input("Which stat would you like to increase? Please select from strength, dexterity, "
-                               "constitution, intelligence, wisdom, and Charisma. ")
-            if which_stat.lower() not in ["strength", "dexterity", "constitution", "intelligence", "wisdom",
-                                          "charisma"]:
-                print(f"\nWhoops, '{which_stat}' wasn't an option. Please select from Strength, Dexterity, "
-                      f"Constitution, Intelligence,Wisdom, or Charisma.")
-            else:
-                self.stat_cost(which_stat)
+        which_stat = input("Which stat would you like to increase? Please select from strength, dexterity, "
+                           "constitution, intelligence, wisdom, and Charisma. ")
+        if which_stat.lower() not in ["strength", "dexterity", "constitution", "intelligence", "wisdom",
+                                      "charisma"]:
+            print(f"\nWhoops, '{which_stat}' wasn't an option. Please select from Strength, Dexterity, "
+                  f"Constitution, Intelligence,Wisdom, or Charisma.")
+        else:
+            self.stat_cost(which_stat.lower())
 
     # Increase a character's base stats.
     def stat_increase(self, stat, amount):
-        stats_dictionary = {"strength": self.strength, "dexterity": self.dexterity, "constitution": self.constitution,
-                            "intelligence": self.intelligence, "wisdom": self.wisdom, "charisma": self.charisma}
-        if stat in stats_dictionary.keys():
-            stats_dictionary[stat] += amount
-            print(f"\nYour {stat} is now {stats_dictionary[stat]}")
+        stats_list = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']
+        if stat in stats_list:
+            self.stats[stat] += amount
+            print(f"\nYour {stat} is now {self.stats[stat]}")
             print(f"\nYou have {self.attribute_points} points remaining. and the following stats:\n\nStrength: "
-                  f"{self.strength}\nDexterity: {self.dexterity}\nConstitution: {self.constitution}\nIntelligence: "
-                  f"{self.intelligence}\nWisdom: {self.wisdom}\nCharisma: {self.charisma}\n")
+                  f"{self.stats['strength']}\nDexterity: {self.stats['dexterity']}\nConstitution: "
+                  f"{self.stats['constitution']}\nIntelligence: {self.stats['intelligence']}\nWisdom: "
+                  f"{self.stats['wisdom']}\nCharisma: {self.stats['charisma']}\n")
         else:
             print("Your code isn't working.")
 
     # Determine cost of stat increase and ensure it can be increased as requested.
     def stat_cost(self, stat):
-        stats_dictionary = {"strength": self.strength, "dexterity": self.dexterity, "constitution": self.constitution,
-                            "intelligence": self.intelligence, "wisdom": self.wisdom, "charisma": self.charisma}
         print(f"Attribute Points: {self.attribute_points}")
         print(f"\nHow many points would you like to increase {stat} by? ")
         increase = input("Selection: ")
         cost = 0
-        for number in range(stats_dictionary[stat], stats_dictionary[stat] + int(increase)):
+        for number in range(self.stats[stat], self.stats[stat] + int(increase)):
             if number <= 13:
                 cost += 1
             elif number <= 15:
@@ -142,8 +137,8 @@ class Character_DnD:
             print(f"\nThis increase requires {cost} attribute points and you only have {self.attribute_points}. Please"
                   f"select another stat.")
         else:
-            print(f"\nIt will cost {cost} attribute points to increase {stat} from {stats_dictionary[stat]} to "
-                  f"{stats_dictionary[stat] + int(increase)}. Do you want to apply this change Y/N?")
+            print(f"\nIt will cost {cost} attribute points to increase {stat} from {self.stats[stat]}"
+                  f" to {self.stats[stat] + int(increase)}. Do you want to apply this change Y/N?")
             choice = input("Selection: ")
             if choice.lower() == "y":
                 self.attribute_points -= cost
